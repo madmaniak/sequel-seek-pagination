@@ -6,14 +6,11 @@ module Sequel
     class Error < StandardError; end
 
     def seek(base, back: false, with_base: nil, by_pk: nil, not_null: nil)
-      model = @model
       ds    = back ? self.reverse : self
       order = ds.opts[:order]
 
       if order.nil? || order.length.zero?
         raise Error, "cannot seek on a dataset with no order"
-      elsif model.nil? && by_pk
-        raise Error, "passed the :by_pk option to seek on a dataset that doesn't have an associated model"
       end
 
       if by_pk
